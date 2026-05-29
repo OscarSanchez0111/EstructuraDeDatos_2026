@@ -1,0 +1,15 @@
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/bin/Debug/net10.0/Clase4_Recursividad
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/bin/Debug/net10.0/Clase4_Recursividad.deps.json
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/bin/Debug/net10.0/Clase4_Recursividad.runtimeconfig.json
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/bin/Debug/net10.0/Clase4_Recursividad.dll
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/bin/Debug/net10.0/Clase4_Recursividad.pdb
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.GeneratedMSBuildEditorConfig.editorconfig
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.AssemblyInfoInputs.cache
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.AssemblyInfo.cs
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.csproj.CoreCompileInputs.cache
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.sourcelink.json
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.dll
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/refint/Clase4_Recursividad.dll
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.pdb
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/Clase4_Recursividad.genruntimeconfig.cache
+/Users/oscarsanchez/Desktop/EstructuraDeDatos_2026/Clase4_Recursividad/obj/Debug/net10.0/ref/Clase4_Recursividad.dll
