@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EstructuraDeDatos_2026")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4cf2ba2bf109eb1cb8df924e7ee8e8c93af5afd1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f8b6b592332709f46542da93046e395b5ae9cf3")]
 [assembly: System.Reflection.AssemblyProductAttribute("EstructuraDeDatos_2026")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EstructuraDeDatos_2026")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
