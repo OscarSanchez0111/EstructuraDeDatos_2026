@@ -1,0 +1,12 @@
+# Resultados de compilación de .NET
+**/bin/
+**/obj/
+
+# Visual Studio y VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Archivos de macOS
+.DS_Store
