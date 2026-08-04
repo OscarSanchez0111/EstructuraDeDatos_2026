@@ -8,7 +8,8 @@ internal static class Program
     private static void Main()
     {
         Console.WriteLine("=== PROYECTO FINAL - FASE 3 ===");
-        Console.WriteLine("Lista simplemente enlazada en memoria Heap");
+        Console.WriteLine(
+            "Lista simplemente enlazada en memoria Heap");
         Console.WriteLine();
 
         TablaDinamica dataCore = new();
@@ -28,7 +29,8 @@ internal static class Program
         }
 
         Console.WriteLine();
-        Console.WriteLine($"Cantidad inicial: {dataCore.Cantidad}");
+        Console.WriteLine(
+            $"Cantidad inicial: {dataCore.Cantidad}");
         Console.WriteLine();
 
         // Paso 2: eliminar dos registros.
@@ -40,8 +42,11 @@ internal static class Program
 
         Console.WriteLine(
             "Cadena reestructurada correctamente.");
+
         Console.WriteLine(
-            $"Cantidad después de eliminar: {dataCore.Cantidad}");
+            $"Cantidad después de eliminar: " +
+            $"{dataCore.Cantidad}");
+
         Console.WriteLine();
 
         // Paso 3: comprobar la búsqueda.
@@ -50,8 +55,8 @@ internal static class Program
 
         Console.WriteLine(
             encontrado.HasValue
-                ? $"Búsqueda Id 8: encontrado"
-                : $"Búsqueda Id 8: no encontrado");
+                ? "Búsqueda Id 8: encontrado"
+                : "Búsqueda Id 8: no encontrado");
 
         Console.WriteLine();
 
@@ -77,25 +82,112 @@ internal static class Program
         }
 
         bool ordenCorrecto = EstaOrdenado(arreglo);
+
         bool eliminadosAusentes =
             arreglo.All(registro =>
                 registro.Id != 5 && registro.Id != 11);
 
         Console.WriteLine();
         Console.WriteLine("--- VERIFICACIÓN ---");
+
         Console.WriteLine(
-            $"Cantidad correcta       : {arreglo.Length == 13}");
+            $"Cantidad correcta       : " +
+            $"{arreglo.Length == 13}");
+
         Console.WriteLine(
             $"Ordenación correcta     : {ordenCorrecto}");
+
         Console.WriteLine(
-            $"Id 5 y 11 eliminados    : {eliminadosAusentes}");
+            $"Id 5 y 11 eliminados    : " +
+            $"{eliminadosAusentes}");
+
         Console.WriteLine(
             $"Sin referencias nulas   : " +
-            $"{arreglo.All(registro => registro.PesoBytes > 0)}");
+            $"{arreglo.All(registro =>
+                registro.PesoBytes > 0)}");
 
         Console.WriteLine();
         Console.WriteLine("--- MÉTRICAS DE QUICKSORT ---");
         Console.WriteLine(metricas);
+
+        // Paso 6: benchmark de memoria con 1,000 registros.
+        Console.WriteLine();
+        Console.WriteLine(
+            "=== BENCHMARK DE MEMORIA: 1,000 REGISTROS ===");
+
+        ResultadoBenchmarkMemoria benchmark =
+            BenchmarkMemoria.Ejecutar(1_000);
+
+        ImprimirBenchmark(benchmark);
+    }
+
+    private static void ImprimirBenchmark(
+        ResultadoBenchmarkMemoria resultado)
+    {
+        double proporcionMemoria =
+            resultado.BytesArreglo > 0
+                ? (double)resultado.BytesLista
+                    / resultado.BytesArreglo
+                : 0;
+
+        double proporcionTiempo =
+            resultado.TiempoArregloMs > 0
+                ? resultado.TiempoListaMs
+                    / resultado.TiempoArregloMs
+                : 0;
+
+        Console.WriteLine(
+            $"Registros evaluados       : " +
+            $"{resultado.CantidadRegistros:N0}");
+
+        Console.WriteLine();
+        Console.WriteLine("--- ARREGLO ---");
+
+        Console.WriteLine(
+            $"Tiempo de creación        : " +
+            $"{resultado.TiempoArregloMs:F4} ms");
+
+        Console.WriteLine(
+            $"Memoria asignada aprox.   : " +
+            $"{resultado.BytesArreglo:N0} bytes");
+
+        Console.WriteLine();
+        Console.WriteLine("--- LISTA ENLAZADA ---");
+
+        Console.WriteLine(
+            $"Tiempo de inserción final : " +
+            $"{resultado.TiempoListaMs:F4} ms");
+
+        Console.WriteLine(
+            $"Memoria asignada aprox.   : " +
+            $"{resultado.BytesLista:N0} bytes");
+
+        Console.WriteLine();
+        Console.WriteLine("--- CONVERSIÓN A ARREGLO ---");
+
+        Console.WriteLine(
+            $"Tiempo de conversión      : " +
+            $"{resultado.TiempoConversionMs:F4} ms");
+
+        Console.WriteLine(
+            $"Memoria de conversión     : " +
+            $"{resultado.BytesConversion:N0} bytes");
+
+        Console.WriteLine();
+        Console.WriteLine("--- INTERPRETACIÓN ---");
+
+        Console.WriteLine(
+            $"La lista asignó aprox.    : " +
+            $"{proporcionMemoria:F2}x la memoria del arreglo");
+
+        Console.WriteLine(
+            $"Insertar al final tomó    : " +
+            $"{proporcionTiempo:F2}x el tiempo del arreglo");
+
+        Console.WriteLine();
+        Console.WriteLine(
+            "Nota: las métricas de memoria son aproximadas " +
+            "y pueden variar entre ejecuciones.");
     }
 
     private static bool EstaOrdenado(
