@@ -164,7 +164,11 @@ public class PruebasTablaDinamica
     [Fact]
     public void EliminarPorId_IdsRepetidos_EliminaSoloPrimero()
     {
-        TablaDinamica tabla = CrearTabla(10, 20, 20, 30);
+        TablaDinamica tabla = CrearTabla(
+            10,
+            20,
+            20,
+            30);
 
         tabla.EliminarPorId(20);
 
@@ -178,13 +182,17 @@ public class PruebasTablaDinamica
     [Fact]
     public void ObtenerComoArreglo_ConservaTodosLosRegistros()
     {
-        TablaDinamica tabla = CrearTabla(5, 15, 25, 35);
+        TablaDinamica tabla =
+            CrearTabla(5, 15, 25, 35);
 
         RegistroDatos[] resultado =
             tabla.ObtenerComoArreglo();
 
         Assert.Equal(4, resultado.Length);
-        Assert.Equal([5, 15, 25, 35], ObtenerIds(resultado));
+
+        Assert.Equal(
+            [5, 15, 25, 35],
+            ObtenerIds(resultado));
     }
 
     [Fact]
@@ -207,6 +215,41 @@ public class PruebasTablaDinamica
         Assert.True(metricas.TotalComparaciones > 0);
     }
 
+    [Fact]
+    public void Benchmark_CantidadInvalida_LanzaExcepcion()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => BenchmarkMemoria.Ejecutar(0));
+    }
+
+    [Fact]
+    public void Benchmark_MilRegistros_ProduceMetricasValidas()
+    {
+        ResultadoBenchmarkMemoria resultado =
+            BenchmarkMemoria.Ejecutar(1_000);
+
+        Assert.Equal(
+            1_000,
+            resultado.CantidadRegistros);
+
+        Assert.True(resultado.BytesArreglo > 0);
+        Assert.True(resultado.BytesLista > 0);
+        Assert.True(resultado.BytesConversion > 0);
+
+        Assert.True(
+            resultado.BytesLista
+            > resultado.BytesArreglo);
+
+        Assert.True(
+            resultado.TiempoArregloMs >= 0);
+
+        Assert.True(
+            resultado.TiempoListaMs >= 0);
+
+        Assert.True(
+            resultado.TiempoConversionMs >= 0);
+    }
+
     private static TablaDinamica CrearTabla(
         params int[] ids)
     {
@@ -214,13 +257,15 @@ public class PruebasTablaDinamica
 
         foreach (int id in ids)
         {
-            tabla.InsertarFinal(CrearRegistro(id));
+            tabla.InsertarFinal(
+                CrearRegistro(id));
         }
 
         return tabla;
     }
 
-    private static RegistroDatos CrearRegistro(int id)
+    private static RegistroDatos CrearRegistro(
+        int id)
     {
         return new RegistroDatos(
             id,
