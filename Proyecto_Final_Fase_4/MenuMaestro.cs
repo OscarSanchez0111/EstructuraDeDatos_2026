@@ -82,7 +82,8 @@ public sealed class MenuMaestro
         salida.WriteLine("[3] Mostrar todos los registros");
         salida.WriteLine("[4] Ordenar e indexar registros");
         salida.WriteLine("[5] Buscar registro");
-        salida.WriteLine("[6] Estadísticas e historial");
+        salida.WriteLine(
+            "[6] Estadísticas, historial y benchmark");
         salida.WriteLine("[0] Salir");
         salida.WriteLine("===========================================");
     }
@@ -138,8 +139,10 @@ public sealed class MenuMaestro
         salida.WriteLine("--- INSERTAR REGISTRO ---");
 
         int id = LeerEnteroPositivo("ID: ");
-        long hash = LeerLongNoNegativo("Hash de validación: ");
-        int peso = LeerEnteroPositivo("Peso en bytes: ");
+        long hash = LeerLongNoNegativo(
+            "Hash de validación: ");
+        int peso = LeerEnteroPositivo(
+            "Peso en bytes: ");
 
         try
         {
@@ -153,7 +156,8 @@ public sealed class MenuMaestro
             if (insertado)
             {
                 salida.WriteLine(
-                    $"Registro con ID {id} insertado correctamente.");
+                    $"Registro con ID {id} " +
+                    "insertado correctamente.");
             }
             else
             {
@@ -164,7 +168,8 @@ public sealed class MenuMaestro
         catch (ArgumentException excepcion)
         {
             salida.WriteLine(
-                $"No fue posible insertar: {excepcion.Message}");
+                $"No fue posible insertar: " +
+                $"{excepcion.Message}");
         }
     }
 
@@ -240,7 +245,8 @@ public sealed class MenuMaestro
         if (indice.Length == 0)
         {
             salida.WriteLine(
-                "La tabla está vacía; se generó un índice vacío.");
+                "La tabla está vacía; " +
+                "se generó un índice vacío.");
 
             return;
         }
@@ -262,7 +268,8 @@ public sealed class MenuMaestro
         salida.WriteLine();
         salida.WriteLine("--- MÓDULO DE BÚSQUEDA ---");
         salida.WriteLine("[1] Búsqueda lineal O(n)");
-        salida.WriteLine("[2] Búsqueda binaria indexada O(log n)");
+        salida.WriteLine(
+            "[2] Búsqueda binaria indexada O(log n)");
         salida.WriteLine("[0] Regresar");
 
         int opcion = LeerEnteroEnRango(
@@ -272,7 +279,9 @@ public sealed class MenuMaestro
 
         if (opcion == 0)
         {
-            salida.WriteLine("Regresando al menú principal.");
+            salida.WriteLine(
+                "Regresando al menú principal.");
+
             return;
         }
 
@@ -297,7 +306,9 @@ public sealed class MenuMaestro
     /// <summary>
     /// Muestra el resultado y las comparaciones de una búsqueda.
     /// </summary>
-    /// <param name="algoritmo">Nombre del algoritmo utilizado.</param>
+    /// <param name="algoritmo">
+    /// Nombre del algoritmo utilizado.
+    /// </param>
     /// <param name="resultado">Resultado obtenido.</param>
     private void MostrarResultadoBusqueda(
         string algoritmo,
@@ -317,11 +328,12 @@ public sealed class MenuMaestro
         }
 
         salida.WriteLine(
-            $"Comparaciones realizadas: {resultado.Comparaciones}");
+            $"Comparaciones realizadas: " +
+            $"{resultado.Comparaciones}");
     }
 
     /// <summary>
-    /// Presenta estadísticas e historial de la sesión.
+    /// Presenta estadísticas, historial y el benchmark opcional.
     /// </summary>
     private void MostrarEstadisticas()
     {
@@ -333,9 +345,11 @@ public sealed class MenuMaestro
             $"Peso total declarado : " +
             $"{gestor.CalcularPesoTotalBytes():N0} bytes");
         salida.WriteLine(
-            $"Índice actualizado   : {gestor.IndiceActualizado}");
+            $"Índice actualizado   : " +
+            $"{gestor.IndiceActualizado}");
         salida.WriteLine(
-            $"Operaciones registradas: {gestor.TotalOperaciones}");
+            $"Operaciones registradas: " +
+            $"{gestor.TotalOperaciones}");
 
         string[] historial =
             gestor.ObtenerHistorial();
@@ -343,29 +357,71 @@ public sealed class MenuMaestro
         if (historial.Length == 0)
         {
             salida.WriteLine("El historial está vacío.");
-            return;
+        }
+        else
+        {
+            salida.WriteLine();
+            salida.WriteLine("--- HISTORIAL ---");
+
+            foreach (string operacion in historial)
+            {
+                salida.WriteLine(operacion);
+            }
         }
 
         salida.WriteLine();
-        salida.WriteLine("--- HISTORIAL ---");
 
-        foreach (string operacion in historial)
+        bool ejecutarBenchmark = Confirmar(
+            "¿Ejecutar benchmark con " +
+            "1,000,000 de registros? (s/n): ");
+
+        if (!ejecutarBenchmark)
         {
-            salida.WriteLine(operacion);
+            salida.WriteLine("Benchmark omitido.");
+            return;
         }
+
+        MostrarBenchmark();
+    }
+
+    /// <summary>
+    /// Ejecuta y muestra la comparación de búsquedas.
+    /// </summary>
+    private void MostrarBenchmark()
+    {
+        salida.WriteLine();
+        salida.WriteLine(
+            "--- BENCHMARK: O(n) VS. O(log n) ---");
+        salida.WriteLine(
+            "Preparando 1,000,000 de registros...");
+
+        ResultadoBenchmarkBusqueda resultado =
+            BenchmarkBusqueda.Ejecutar(
+                cantidadRegistros: 1_000_000);
+
+        salida.WriteLine();
+        salida.WriteLine(resultado);
+        salida.WriteLine();
+        salida.WriteLine(
+            "Nota: los tiempos pueden variar " +
+            "entre ejecuciones.");
     }
 
     /// <summary>
     /// Lee un número entero positivo y controla formatos inválidos.
     /// </summary>
-    /// <param name="mensaje">Texto mostrado antes de leer.</param>
+    /// <param name="mensaje">
+    /// Texto mostrado antes de leer.
+    /// </param>
     /// <returns>Número entero mayor que cero.</returns>
     private int LeerEnteroPositivo(string mensaje)
     {
         while (true)
         {
             salida.Write(mensaje);
-            string valor = entrada.ReadLine() ?? string.Empty;
+
+            string valor =
+                entrada.ReadLine() ?? string.Empty;
 
             try
             {
@@ -384,12 +440,14 @@ public sealed class MenuMaestro
             catch (FormatException)
             {
                 salida.WriteLine(
-                    "Entrada inválida. Escriba un número entero.");
+                    "Entrada inválida. " +
+                    "Escriba un número entero.");
             }
             catch (OverflowException)
             {
                 salida.WriteLine(
-                    "El número está fuera del rango permitido.");
+                    "El número está fuera " +
+                    "del rango permitido.");
             }
         }
     }
@@ -397,7 +455,9 @@ public sealed class MenuMaestro
     /// <summary>
     /// Lee un entero dentro de un rango permitido.
     /// </summary>
-    /// <param name="mensaje">Texto mostrado antes de leer.</param>
+    /// <param name="mensaje">
+    /// Texto mostrado antes de leer.
+    /// </param>
     /// <param name="minimo">Valor mínimo aceptado.</param>
     /// <param name="maximo">Valor máximo aceptado.</param>
     /// <returns>Número validado.</returns>
@@ -409,7 +469,9 @@ public sealed class MenuMaestro
         while (true)
         {
             salida.Write(mensaje);
-            string valor = entrada.ReadLine() ?? string.Empty;
+
+            string valor =
+                entrada.ReadLine() ?? string.Empty;
 
             try
             {
@@ -429,12 +491,14 @@ public sealed class MenuMaestro
             catch (FormatException)
             {
                 salida.WriteLine(
-                    "Entrada inválida. Escriba una opción numérica.");
+                    "Entrada inválida. " +
+                    "Escriba una opción numérica.");
             }
             catch (OverflowException)
             {
                 salida.WriteLine(
-                    "El número está fuera del rango permitido.");
+                    "El número está fuera " +
+                    "del rango permitido.");
             }
         }
     }
@@ -442,14 +506,18 @@ public sealed class MenuMaestro
     /// <summary>
     /// Lee un número long igual o mayor que cero.
     /// </summary>
-    /// <param name="mensaje">Texto mostrado antes de leer.</param>
+    /// <param name="mensaje">
+    /// Texto mostrado antes de leer.
+    /// </param>
     /// <returns>Número long validado.</returns>
     private long LeerLongNoNegativo(string mensaje)
     {
         while (true)
         {
             salida.Write(mensaje);
-            string valor = entrada.ReadLine() ?? string.Empty;
+
+            string valor =
+                entrada.ReadLine() ?? string.Empty;
 
             try
             {
@@ -468,12 +536,14 @@ public sealed class MenuMaestro
             catch (FormatException)
             {
                 salida.WriteLine(
-                    "Entrada inválida. Escriba un número entero.");
+                    "Entrada inválida. " +
+                    "Escriba un número entero.");
             }
             catch (OverflowException)
             {
                 salida.WriteLine(
-                    "El número está fuera del rango permitido.");
+                    "El número está fuera " +
+                    "del rango permitido.");
             }
         }
     }
@@ -481,8 +551,12 @@ public sealed class MenuMaestro
     /// <summary>
     /// Solicita una confirmación mediante las respuestas s o n.
     /// </summary>
-    /// <param name="mensaje">Pregunta que se mostrará al usuario.</param>
-    /// <returns>True cuando se responde afirmativamente.</returns>
+    /// <param name="mensaje">
+    /// Pregunta que se mostrará al usuario.
+    /// </param>
+    /// <returns>
+    /// True cuando se responde afirmativamente.
+    /// </returns>
     private bool Confirmar(string mensaje)
     {
         while (true)
