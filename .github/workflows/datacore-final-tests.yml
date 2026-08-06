@@ -1,0 +1,41 @@
+name: Pruebas Proyecto Final DataCore
+
+on:
+  push:
+    branches:
+      - feature/proyecto-final-datacore-v4
+      - main
+  pull_request:
+    branches:
+      - feature/proyecto-fase4-integracion
+      - main
+
+jobs:
+  build-and-test:
+    name: Compilar y ejecutar 87 pruebas
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restaurar dependencias
+        run: dotnet restore DataCore_Engine_v4.sln
+
+      - name: Compilar solución
+        run: >
+          dotnet build DataCore_Engine_v4.sln
+          --configuration Release
+          --no-restore
+
+      - name: Ejecutar todas las pruebas
+        run: >
+          dotnet test DataCore_Engine_v4.sln
+          --configuration Release
+          --no-build
+          --verbosity normal
