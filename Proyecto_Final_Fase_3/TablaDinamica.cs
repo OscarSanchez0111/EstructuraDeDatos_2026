@@ -3,140 +3,41 @@ using Proyecto_Final_Fase_1;
 namespace Proyecto_Final_Fase_3;
 
 /// <summary>
-/// Implementa una lista simplemente enlazada de registros.
+/// Especialización de TablaDinamica para los registros de DataCore.
+/// Conserva las operaciones por ID utilizadas por las fases 3 y 4.
 /// </summary>
-public sealed class TablaDinamica
+public sealed class TablaDinamica :
+    TablaDinamica<RegistroDatos>
 {
-    private NodoRegistro? cabeza;
-    private int contadorRegistros;
-
     /// <summary>
-    /// Cantidad actual de registros. Consulta en tiempo O(1).
+    /// Busca el primer registro que tenga el ID indicado.
+    /// La búsqueda lineal tiene complejidad O(n).
     /// </summary>
-    public int Cantidad => contadorRegistros;
-
-    /// <summary>
-    /// Indica si la lista no contiene nodos.
-    /// </summary>
-    public bool EstaVacia => cabeza is null;
-
-    public TablaDinamica()
-    {
-        cabeza = null;
-        contadorRegistros = 0;
-    }
-
-    /// <summary>
-    /// Inserta un registro al comienzo de la lista en tiempo O(1).
-    /// </summary>
-    public void InsertarInicio(RegistroDatos nuevoRegistro)
-    {
-        NodoRegistro nuevoNodo = new(nuevoRegistro)
-        {
-            Siguiente = cabeza
-        };
-
-        cabeza = nuevoNodo;
-        contadorRegistros++;
-    }
-
-    /// <summary>
-    /// Inserta un registro al final, conservando el orden de llegada.
-    /// </summary>
-    public void InsertarFinal(RegistroDatos nuevoRegistro)
-    {
-        NodoRegistro nuevoNodo = new(nuevoRegistro);
-
-        if (cabeza is null)
-        {
-            cabeza = nuevoNodo;
-            contadorRegistros++;
-            return;
-        }
-
-        NodoRegistro actual = cabeza;
-
-        while (actual.Siguiente is not null)
-        {
-            actual = actual.Siguiente;
-        }
-
-        actual.Siguiente = nuevoNodo;
-        contadorRegistros++;
-    }
-
-    /// <summary>
-    /// Busca el primer registro que tenga el Id indicado.
-    /// </summary>
+    /// <param name="id">Identificador que se desea localizar.</param>
+    /// <returns>
+    /// El registro encontrado o null cuando el ID no existe.
+    /// </returns>
     public RegistroDatos? BuscarPorId(int id)
     {
-        NodoRegistro? actual = cabeza;
+        bool encontrado = IntentarBuscar(
+            registro => registro.Id == id,
+            out RegistroDatos resultado);
 
-        while (actual is not null)
-        {
-            if (actual.Dato.Id == id)
-            {
-                return actual.Dato;
-            }
-
-            actual = actual.Siguiente;
-        }
-
-        return null;
+        return encontrado
+            ? resultado
+            : null;
     }
 
     /// <summary>
-    /// Elimina la primera aparición del Id indicado.
+    /// Elimina la primera aparición del ID indicado.
+    /// Si el ID no existe, la lista permanece sin cambios.
     /// </summary>
+    /// <param name="idObjetivo">
+    /// Identificador del registro que se desea eliminar.
+    /// </param>
     public void EliminarPorId(int idObjetivo)
     {
-        if (cabeza is null)
-        {
-            return;
-        }
-
-        if (cabeza.Dato.Id == idObjetivo)
-        {
-            cabeza = cabeza.Siguiente;
-            contadorRegistros--;
-            return;
-        }
-
-        NodoRegistro anterior = cabeza;
-        NodoRegistro? actual = cabeza.Siguiente;
-
-        while (actual is not null)
-        {
-            if (actual.Dato.Id == idObjetivo)
-            {
-                anterior.Siguiente = actual.Siguiente;
-                contadorRegistros--;
-                return;
-            }
-
-            anterior = actual;
-            actual = actual.Siguiente;
-        }
-    }
-
-    /// <summary>
-    /// Copia todos los registros a un arreglo en el mismo orden.
-    /// </summary>
-    public RegistroDatos[] ObtenerComoArreglo()
-    {
-        RegistroDatos[] resultado =
-            new RegistroDatos[contadorRegistros];
-
-        NodoRegistro? actual = cabeza;
-        int indice = 0;
-
-        while (actual is not null)
-        {
-            resultado[indice] = actual.Dato;
-            actual = actual.Siguiente;
-            indice++;
-        }
-
-        return resultado;
+        EliminarPrimero(
+            registro => registro.Id == idObjetivo);
     }
 }
