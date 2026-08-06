@@ -24,8 +24,6 @@ public sealed class Nodo<T>
     /// </summary>
     public Nodo(T dato)
     {
-        ArgumentNullException.ThrowIfNull(dato);
-
         Dato = dato;
         Siguiente = null;
     }

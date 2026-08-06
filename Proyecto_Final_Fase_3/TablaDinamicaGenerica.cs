@@ -38,8 +38,6 @@ public class TablaDinamica<T>
     /// </summary>
     public void InsertarInicio(T nuevoElemento)
     {
-        ArgumentNullException.ThrowIfNull(nuevoElemento);
-
         Nodo<T> nuevoNodo = new(nuevoElemento)
         {
             Siguiente = cabeza
@@ -60,8 +58,6 @@ public class TablaDinamica<T>
     /// </summary>
     public void InsertarFinal(T nuevoElemento)
     {
-        ArgumentNullException.ThrowIfNull(nuevoElemento);
-
         Nodo<T> nuevoNodo = new(nuevoElemento);
 
         if (cabeza is null)
