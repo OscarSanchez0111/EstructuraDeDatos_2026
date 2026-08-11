@@ -1,0 +1,32 @@
+name: Pruebas Fase 4
+
+on:
+  push:
+    branches:
+      - feature/proyecto-fase4-integracion
+  pull_request:
+    branches:
+      - feature/proyecto-fase3-linkedlist
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restaurar dependencias
+        run: dotnet restore Proyecto_Final_Fase_4.Tests/Proyecto_Final_Fase_4.Tests.csproj
+
+      - name: Compilar
+        run: dotnet build Proyecto_Final_Fase_4.Tests/Proyecto_Final_Fase_4.Tests.csproj --no-restore
+
+      - name: Ejecutar pruebas
+        run: dotnet test Proyecto_Final_Fase_4.Tests/Proyecto_Final_Fase_4.Tests.csproj --no-build
